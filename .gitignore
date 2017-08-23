@@ -1,0 +1,7 @@
+# Editors
+.*.sw[a-z]
+
+# Haskell
+*.tix
+.stack-work
+dist
