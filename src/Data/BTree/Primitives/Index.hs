@@ -265,6 +265,20 @@ valViewMin (Index keys vals)
     | otherwise
     = throw $ TreeAlgorithmError "valViewMin" "cannot split an empty index"
 
+valViewMax :: Index key val -> (IndexCtx key val, val)
+valViewMax (Index keys vals)
+    | Just (leftVals, val) <- vecUnsnoc vals
+    = ( IndexCtx
+        { indexCtxLeftKeys  = keys
+        , indexCtxRightKeys = V.empty
+        , indexCtxLeftVals  = leftVals
+        , indexCtxRightVals = V.empty
+        },
+        val
+      )
+    | otherwise
+    = throw $ TreeAlgorithmError "valViewMax" "cannot split an empty index"
+
 -- | Distribute a map of key-value pairs over an index.
 distribute :: Ord k => M.Map k v -> Index k node -> Index k (M.Map k v, node)
 distribute kvs (Index keys nodes)

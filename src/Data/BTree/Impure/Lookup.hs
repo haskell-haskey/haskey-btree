@@ -85,4 +85,30 @@ lookupMinTree tree
     lookupMin m | M.null m  = Nothing
                 | otherwise = Just $! M.findMin m
 
+-- | The maximal key of the map, returns 'Nothing' if the map is empty.
+lookupMaxTree :: (AllocReaderM m, Key key, Value val)
+              => Tree key val
+              -> m (Maybe (key, val))
+lookupMaxTree tree
+    | Tree { treeRootId = Nothing } <- tree = return Nothing
+    | Tree { treeHeight = height
+           , treeRootId = Just rootId } <- tree
+    = lookupMaxRec height rootId
+  where
+    lookupMaxRec :: (AllocReaderM m, Key key, Value val)
+                 => Height height
+                 -> NodeId height key val
+                 -> m (Maybe (key, val))
+    lookupMaxRec h nid = readNode h nid >>= \case
+        Idx children -> let (_, childId) = valViewMax children in
+                        lookupMaxRec (decrHeight h) childId
+        Leaf items -> case lookupMax items of
+            Nothing -> return Nothing
+            Just (k, v) -> do
+                v' <- fromLeafValue v
+                return $ Just (k, v')
+
+    lookupMax m | M.null m  = Nothing
+                | otherwise = Just $! M.findMax m
+
 --------------------------------------------------------------------------------
