@@ -3,6 +3,7 @@ module Data.BTree.Primitives.Key where
 
 import Data.ByteString (ByteString)
 import Data.Int
+import Data.Text (Text)
 import Data.Word
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Unsafe as BS
@@ -29,6 +30,7 @@ instance Key Int16
 instance Key Int32
 instance Key Int64
 instance Key Integer
+instance Key Text
 instance Key Word8
 instance Key Word16
 instance Key Word32

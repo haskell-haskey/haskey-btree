@@ -7,6 +7,7 @@ import Data.Binary         (Binary)
 import Data.ByteString     (ByteString)
 import Data.Int
 import Data.Proxy          (Proxy (..))
+import Data.Text
 import Data.Typeable
 import Data.Word
 
@@ -34,6 +35,7 @@ instance Value Word64 where fixedSize _ = Just 8
 
 instance Value ByteString
 instance Value Integer
+instance Value Text
 
 instance (Value k1, Value k2) => Value (k1,k2) where
     fixedSize _ =
