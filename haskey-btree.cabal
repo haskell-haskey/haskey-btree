@@ -1,5 +1,5 @@
 name:                haskey-btree
-version:             0.1.0.0
+version:             0.2.0.0
 synopsis:            B+-tree implementation in Haskell.
 description:
     This package provides two B+-tree implementations. The first one is a pure
