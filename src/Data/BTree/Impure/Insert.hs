@@ -1,5 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- | Algorithms related to inserting key-value pairs in an impure B+-tree.
 module Data.BTree.Impure.Insert where
@@ -73,6 +74,11 @@ insertRec k v = fetch
                 newChildren <- splitIndex hgt (putIdx ctx newChildIdx)
                 traverse (allocNode hgt) newChildren
             Leaf items -> do
+                case M.lookup k items of
+                    Nothing                  -> return ()
+                    Just (RawValue _)        -> return ()
+                    Just (OverflowValue oid) -> freeOverflow oid
+
                 v' <- toLeafValue v
                 traverse (allocNode hgt) =<< splitLeaf (M.insert k v' items)
 
@@ -93,8 +99,18 @@ insertRecMany h kvs nid
             newChildren <- splitIndex h newIndex
             traverse (allocNode h) newChildren
         Leaf items -> do
+            mapM_ (\k -> freeOverwrittenOverflowId $ M.lookup k items) $ M.keys kvs
             kvs' <- toLeafItems kvs
             traverse (allocNode h) =<< splitLeaf (M.union kvs' items)
+  where
+    freeOverwrittenOverflowId :: (AllocM m)
+                              => Maybe (LeafValue v)
+                              -> m ()
+    freeOverwrittenOverflowId = \case
+        Nothing                  -> return ()
+        Just (RawValue _)        -> return ()
+        Just (OverflowValue oid) -> freeOverflow oid
+
 
 --------------------------------------------------------------------------------
 
