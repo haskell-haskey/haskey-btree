@@ -85,3 +85,4 @@ instance (Functor m, Monad m) => AllocM (DebugT m) where
         return (0, c)
 
     freeOverflow _ = return ()
+    deleteOverflowData _ = return ()
