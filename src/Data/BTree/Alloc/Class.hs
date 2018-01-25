@@ -64,4 +64,7 @@ class AllocReaderM m => AllocM m where
     -- | Free an overflow page.
     freeOverflow :: OverflowId -> m ()
 
+    -- | Force delete overflow data from disk.
+    deleteOverflowData :: OverflowId -> m ()
+
 --------------------------------------------------------------------------------
