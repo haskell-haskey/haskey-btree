@@ -10,14 +10,14 @@ module Data.BTree.Impure.NonEmpty (
   -- * Conversions
 , fromTree
 , toTree
-, nonEmptyToList
+, toList
 
   -- * Construction
-, fromNonEmptyList
+, fromList
 
   -- * Inserting
-, insertNonEmptyTree
-, insertNonEmptyTreeMany
+, insert
+, insertMany
 ) where
 
 import Control.Applicative ((<$>), (<*>))
@@ -31,8 +31,9 @@ import qualified Data.List.NonEmpty as NE
 import qualified Data.Map as M
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure (Tree(..), Node(..), insertTree, insertTreeMany, empty, toList)
+import Data.BTree.Impure (Tree(..), Node(..))
 import Data.BTree.Primitives
+import qualified Data.BTree.Impure as B
 
 -- | A non-empty variant of 'Tree'.
 data NonEmptyTree key val where
@@ -63,28 +64,28 @@ toTree :: NonEmptyTree key val -> Tree key val
 toTree (NonEmptyTree h n) = Tree h (Just n)
 
 -- | Create a 'NonEmptyTree' from a 'NonEmpty' list.
-fromNonEmptyList :: (AllocM m, Key k, Value v)
-                 => NonEmpty (k, v)
-                 -> m (NonEmptyTree k v)
-fromNonEmptyList (x :| xs) = fromJust . fromTree <$> insertTreeMany (M.fromList (x:xs)) empty
+fromList :: (AllocM m, Key k, Value v)
+         => NonEmpty (k, v)
+         -> m (NonEmptyTree k v)
+fromList (x :| xs) = fromJust . fromTree <$> B.insertMany (M.fromList (x:xs)) B.empty
 
 -- | Insert an item into a 'NonEmptyTree'
-insertNonEmptyTree :: (AllocM m, Key k, Value v)
-                   => k
-                   -> v
-                   -> NonEmptyTree k v
-                   -> m (NonEmptyTree k v)
-insertNonEmptyTree k v tree = fromJust . fromTree <$> insertTree k v (toTree tree)
+insert :: (AllocM m, Key k, Value v)
+       => k
+       -> v
+       -> NonEmptyTree k v
+       -> m (NonEmptyTree k v)
+insert k v tree = fromJust . fromTree <$> B.insert k v (toTree tree)
 
 -- | Bulk insert a bunch of key-value pairs into a 'NonEmptyTree'.
-insertNonEmptyTreeMany :: (AllocM m, Key k, Value v)
-                       => Map k v
-                       -> NonEmptyTree k v
-                       -> m (NonEmptyTree k v)
-insertNonEmptyTreeMany kvs tree = fromJust . fromTree <$> insertTreeMany kvs (toTree tree)
+insertMany :: (AllocM m, Key k, Value v)
+           => Map k v
+           -> NonEmptyTree k v
+           -> m (NonEmptyTree k v)
+insertMany kvs tree = fromJust . fromTree <$> B.insertMany kvs (toTree tree)
 
 -- | Convert a non-empty tree to a list of key-value pairs.
-nonEmptyToList :: (AllocReaderM m, Key k, Value v)
-               => NonEmptyTree k v
-               -> m (NonEmpty (k, v))
-nonEmptyToList tree = NE.fromList <$> toList (toTree tree)
+toList :: (AllocReaderM m, Key k, Value v)
+       => NonEmptyTree k v
+       -> m (NonEmpty (k, v))
+toList tree = NE.fromList <$> B.toList (toTree tree)

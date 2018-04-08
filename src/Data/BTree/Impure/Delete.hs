@@ -94,11 +94,11 @@ deleteRec key = fetchAndGo
 --------------------------------------------------------------------------------
 
 -- | Delete a node from the tree.
-deleteTree :: (AllocM m, Key key, Value val)
+delete :: (AllocM m, Key key, Value val)
     => key
     -> Tree key val
     -> m (Tree key val)
-deleteTree k tree
+delete k tree
     | Tree
       { treeRootId = Nothing
       } <- tree
