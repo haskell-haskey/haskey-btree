@@ -37,11 +37,11 @@ import Data.Map (Map)
 import qualified Data.Map as M
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Delete (delete)
-import Data.BTree.Impure.Structures (Tree(..), Node(..))
-import Data.BTree.Impure.Fold (foldr, foldrM, foldrWithKey, foldrWithKeyM, foldMap, toList)
-import Data.BTree.Impure.Insert (insert, insertMany)
-import Data.BTree.Impure.Lookup (lookup, lookupMin, lookupMax)
+import Data.BTree.Impure.Internal.Delete (delete)
+import Data.BTree.Impure.Internal.Structures (Tree(..), Node(..))
+import Data.BTree.Impure.Internal.Fold (foldr, foldrM, foldrWithKey, foldrWithKeyM, foldMap, toList)
+import Data.BTree.Impure.Internal.Insert (insert, insertMany)
+import Data.BTree.Impure.Internal.Lookup (lookup, lookupMin, lookupMax)
 
 import Data.BTree.Primitives
 

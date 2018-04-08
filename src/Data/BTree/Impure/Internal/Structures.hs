@@ -6,7 +6,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE StandaloneDeriving #-}
 -- | Basic structures of an impure B+-tree.
-module Data.BTree.Impure.Structures (
+module Data.BTree.Impure.Internal.Structures (
   -- * Structures
   Tree(..)
 , Node(..)

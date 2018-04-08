@@ -11,7 +11,7 @@ import Control.Applicative (Applicative)
 
 import Data.Word (Word64)
 
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives
 
 --------------------------------------------------------------------------------

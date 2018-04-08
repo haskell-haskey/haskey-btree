@@ -3,7 +3,7 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- | Algorithms related to looking up key-value pairs in an impure B+-tree.
-module Data.BTree.Impure.Lookup where
+module Data.BTree.Impure.Internal.Lookup where
 
 import Prelude hiding (lookup)
 
@@ -12,8 +12,8 @@ import qualified Data.Map as M
 import Control.Applicative ((<$>))
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Overflow
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Overflow
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives
 
 --------------------------------------------------------------------------------

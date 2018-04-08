@@ -1,6 +1,6 @@
 {-# LANGUAGE GADTs #-}
 -- | Algorithms related to folding over an impure B+-tree.
-module Data.BTree.Impure.Fold where
+module Data.BTree.Impure.Internal.Fold where
 
 import Prelude hiding (foldr, foldl)
 
@@ -10,8 +10,8 @@ import qualified Data.Map as M
 import qualified Data.Foldable as F
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Overflow
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Overflow
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives
 
 --------------------------------------------------------------------------------

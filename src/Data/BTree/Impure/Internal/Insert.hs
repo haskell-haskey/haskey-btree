@@ -3,15 +3,15 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- | Algorithms related to inserting key-value pairs in an impure B+-tree.
-module Data.BTree.Impure.Insert where
+module Data.BTree.Impure.Internal.Insert where
 
 import Data.Map (Map)
 import Data.Traversable (traverse)
 import qualified Data.Map as M
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Overflow
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Overflow
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives.Exception
 import Data.BTree.Primitives
 
