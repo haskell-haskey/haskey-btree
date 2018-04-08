@@ -3,15 +3,15 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- | Algorithms related to inserting key-value pairs in an impure B+-tree.
-module Data.BTree.Impure.Insert where
+module Data.BTree.Impure.Internal.Insert where
 
 import Data.Map (Map)
 import Data.Traversable (traverse)
 import qualified Data.Map as M
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Overflow
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Overflow
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives.Exception
 import Data.BTree.Primitives
 
@@ -118,12 +118,12 @@ insertRecMany h kvs nid
 --
 -- You are responsible to make sure the key is smaller than 'maxKeySize',
 -- otherwise a 'KeyTooLargeError' can (but not always will) be thrown.
-insertTree :: (AllocM m, Key key, Value val)
+insert :: (AllocM m, Key key, Value val)
     => key
     -> val
     -> Tree key val
     -> m (Tree key val)
-insertTree key val tree
+insert key val tree
     | Tree
       { treeHeight = height
       , treeRootId = Just rootId
@@ -162,11 +162,11 @@ insertTree key val tree
 --
 -- You are responsible to make sure all keys is smaller than 'maxKeySize',
 -- otherwise a 'KeyTooLargeError' can (but not always will) be thrown.
-insertTreeMany :: (AllocM m, Key key, Value val)
+insertMany :: (AllocM m, Key key, Value val)
     => Map key val
     -> Tree key val
     -> m (Tree key val)
-insertTreeMany kvs tree
+insertMany kvs tree
     | Tree
       { treeHeight = height
       , treeRootId = Just rootId

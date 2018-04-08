@@ -22,9 +22,9 @@ import GHC.Generics (Generic)
 
 import Data.BTree.Alloc.Class
 import Data.BTree.Alloc.Debug
-import Data.BTree.Impure
+import Data.BTree.Impure (Tree)
 import Data.BTree.Primitives
-import qualified Data.BTree.Impure as Tree
+import qualified Data.BTree.Impure as B
 
 import Integration.WriteOpenRead.Transactions
 
@@ -39,7 +39,7 @@ data AllocatorState k v = AllocatorState {
 
 prop_debug_allocator :: Property
 prop_debug_allocator = forAll genTestSequence $ \(TestSequence txs) ->
-    let s = AllocatorState emptyPages Tree.empty
+    let s = AllocatorState emptyPages B.empty
         m = runIdentity $ evalStateT (runSeq txs) s
     in
     m `seq` True
@@ -79,7 +79,7 @@ prop_debug_allocator = forAll genTestSequence $ \(TestSequence txs) ->
 readAll :: (AllocM m, Key k, Value v)
         => Tree k v
         -> m [(k, v)]
-readAll = Tree.toList
+readAll = B.toList
 
 doTx :: (AllocM m, Key k, Value v)
      => Tree k v
@@ -88,9 +88,9 @@ doTx :: (AllocM m, Key k, Value v)
 doTx tree (TestTransaction actions) =
     foldl (>=>) return (map writeAction actions) tree
   where
-    writeAction (Insert k v) = insertTree k v
-    writeAction (Replace k v) = insertTree k v
-    writeAction (Delete k) = deleteTree k
+    writeAction (Insert k v) = B.insert k v
+    writeAction (Replace k v) = B.insert k v
+    writeAction (Delete k) = B.delete k
 
 --------------------------------------------------------------------------------
 

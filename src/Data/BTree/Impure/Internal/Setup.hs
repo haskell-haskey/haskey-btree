@@ -1,5 +1,5 @@
 -- | Setup of an impure B+-tree
-module Data.BTree.Impure.Setup where
+module Data.BTree.Impure.Internal.Setup where
 
 minFanout :: Int
 minFanout = 2

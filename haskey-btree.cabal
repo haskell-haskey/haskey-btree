@@ -28,14 +28,14 @@ library
     Data.BTree.Alloc.Class
     Data.BTree.Alloc.Debug
     Data.BTree.Impure
-    Data.BTree.Impure.Delete
-    Data.BTree.Impure.Fold
-    Data.BTree.Impure.Insert
-    Data.BTree.Impure.Lookup
+    Data.BTree.Impure.Internal.Delete
+    Data.BTree.Impure.Internal.Fold
+    Data.BTree.Impure.Internal.Insert
+    Data.BTree.Impure.Internal.Lookup
+    Data.BTree.Impure.Internal.Overflow
+    Data.BTree.Impure.Internal.Setup
+    Data.BTree.Impure.Internal.Structures
     Data.BTree.Impure.NonEmpty
-    Data.BTree.Impure.Overflow
-    Data.BTree.Impure.Setup
-    Data.BTree.Impure.Structures
     Data.BTree.Primitives
     Data.BTree.Primitives.Exception
     Data.BTree.Primitives.Height

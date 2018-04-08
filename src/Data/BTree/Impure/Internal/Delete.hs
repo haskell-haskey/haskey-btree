@@ -4,16 +4,16 @@
 {-# LANGUAGE MultiWayIf #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- | Algorithms related to deletion from an impure B+-tree.
-module Data.BTree.Impure.Delete where
+module Data.BTree.Impure.Internal.Delete where
 
 import Data.Monoid
 import Data.Traversable (traverse)
 import qualified Data.Map as M
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Insert
-import Data.BTree.Impure.Setup
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Insert
+import Data.BTree.Impure.Internal.Setup
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives.Exception
 import Data.BTree.Primitives
 
@@ -94,11 +94,11 @@ deleteRec key = fetchAndGo
 --------------------------------------------------------------------------------
 
 -- | Delete a node from the tree.
-deleteTree :: (AllocM m, Key key, Value val)
+delete :: (AllocM m, Key key, Value val)
     => key
     -> Tree key val
     -> m (Tree key val)
-deleteTree k tree
+delete k tree
     | Tree
       { treeRootId = Nothing
       } <- tree

@@ -19,7 +19,7 @@ import Unsafe.Coerce (unsafeCoerce)
 
 import Data.BTree.Alloc.Class
 import Data.BTree.Impure
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives
 
 data SomeNode = forall h k v. SomeNode (Height h) (Node h k v)

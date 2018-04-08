@@ -3,15 +3,17 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- | Algorithms related to looking up key-value pairs in an impure B+-tree.
-module Data.BTree.Impure.Lookup where
+module Data.BTree.Impure.Internal.Lookup where
+
+import Prelude hiding (lookup)
 
 import qualified Data.Map as M
 
 import Control.Applicative ((<$>))
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Overflow
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Overflow
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives
 
 --------------------------------------------------------------------------------
@@ -42,11 +44,11 @@ lookupRec k = fetchAndGo
                                  Just v  -> Just <$> fromLeafValue v
 
 -- | Lookup a value in an impure B+-tree.
-lookupTree :: forall m key val. (AllocReaderM m, Key key, Value val)
+lookup :: forall m key val. (AllocReaderM m, Key key, Value val)
     => key
     -> Tree key val
     -> m (Maybe val)
-lookupTree k tree
+lookup k tree
     | Tree
       { treeHeight = height
       , treeRootId = Just rootId
@@ -60,10 +62,10 @@ lookupTree k tree
 --------------------------------------------------------------------------------
 
 -- | The minimal key of the map, returns 'Nothing' if the map is empty.
-lookupMinTree :: (AllocReaderM m, Key key, Value val)
+lookupMin :: (AllocReaderM m, Key key, Value val)
               => Tree key val
               -> m (Maybe (key, val))
-lookupMinTree tree
+lookupMin tree
     | Tree { treeRootId = Nothing } <- tree = return Nothing
     | Tree { treeHeight = height
            , treeRootId = Just rootId } <- tree
@@ -76,20 +78,20 @@ lookupMinTree tree
     lookupMinRec h nid = readNode h nid >>= \case
         Idx children -> let (_, childId) = valViewMin children in
                         lookupMinRec (decrHeight h) childId
-        Leaf items -> case lookupMin items of
+        Leaf items -> case lookupMin' items of
             Nothing -> return Nothing
             Just (k, v) -> do
                 v' <- fromLeafValue v
                 return $ Just (k, v')
 
-    lookupMin m | M.null m  = Nothing
-                | otherwise = Just $! M.findMin m
+    lookupMin' m | M.null m  = Nothing
+                 | otherwise = Just $! M.findMin m
 
 -- | The maximal key of the map, returns 'Nothing' if the map is empty.
-lookupMaxTree :: (AllocReaderM m, Key key, Value val)
+lookupMax :: (AllocReaderM m, Key key, Value val)
               => Tree key val
               -> m (Maybe (key, val))
-lookupMaxTree tree
+lookupMax tree
     | Tree { treeRootId = Nothing } <- tree = return Nothing
     | Tree { treeHeight = height
            , treeRootId = Just rootId } <- tree
@@ -102,13 +104,13 @@ lookupMaxTree tree
     lookupMaxRec h nid = readNode h nid >>= \case
         Idx children -> let (_, childId) = valViewMax children in
                         lookupMaxRec (decrHeight h) childId
-        Leaf items -> case lookupMax items of
+        Leaf items -> case lookupMax' items of
             Nothing -> return Nothing
             Just (k, v) -> do
                 v' <- fromLeafValue v
                 return $ Just (k, v')
 
-    lookupMax m | M.null m  = Nothing
-                | otherwise = Just $! M.findMax m
+    lookupMax' m | M.null m  = Nothing
+                 | otherwise = Just $! M.findMax m
 
 --------------------------------------------------------------------------------

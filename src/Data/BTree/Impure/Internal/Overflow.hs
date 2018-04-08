@@ -1,5 +1,5 @@
 -- | Functions related to overflow pages.
-module Data.BTree.Impure.Overflow where
+module Data.BTree.Impure.Internal.Overflow where
 
 import Prelude hiding (max, mapM)
 
@@ -11,7 +11,7 @@ import Data.Traversable (mapM)
 import qualified Data.ByteString.Lazy as BL
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives
 
 toLeafValue :: (AllocM m, Value v)

@@ -13,14 +13,14 @@ module Data.BTree.Impure (
 , fromMap
 
   -- * Manipulation
-, insertTree
-, insertTreeMany
-, deleteTree
+, insert
+, insertMany
+, delete
 
   -- * Lookup
-, lookupTree
-, lookupMinTree
-, lookupMaxTree
+, lookup
+, lookupMin
+, lookupMax
 
   -- * Folds
 , foldr
@@ -31,17 +31,17 @@ module Data.BTree.Impure (
 , toList
 ) where
 
-import Prelude hiding (foldr, foldMap)
+import Prelude hiding (lookup, foldr, foldMap)
 
 import Data.Map (Map)
 import qualified Data.Map as M
 
 import Data.BTree.Alloc.Class
-import Data.BTree.Impure.Delete (deleteTree)
-import Data.BTree.Impure.Structures (Tree(..), Node(..))
-import Data.BTree.Impure.Fold (foldr, foldrM, foldrWithKey, foldrWithKeyM, foldMap, toList)
-import Data.BTree.Impure.Insert (insertTree, insertTreeMany)
-import Data.BTree.Impure.Lookup (lookupTree, lookupMinTree, lookupMaxTree)
+import Data.BTree.Impure.Internal.Delete (delete)
+import Data.BTree.Impure.Internal.Structures (Tree(..), Node(..))
+import Data.BTree.Impure.Internal.Fold (foldr, foldrM, foldrWithKey, foldrWithKeyM, foldMap, toList)
+import Data.BTree.Impure.Internal.Insert (insert, insertMany)
+import Data.BTree.Impure.Internal.Lookup (lookup, lookupMin, lookupMax)
 
 import Data.BTree.Primitives
 
@@ -59,4 +59,4 @@ fromList = fromMap . M.fromList
 fromMap :: (AllocM m, Key k, Value v)
         => Map k v
         -> m (Tree k v)
-fromMap kvs = insertTreeMany kvs empty
+fromMap kvs = insertMany kvs empty
