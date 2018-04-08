@@ -15,7 +15,7 @@ import Data.Int
 import Data.Typeable
 import qualified Data.Binary as B
 
-import Data.BTree.Impure.Structures
+import Data.BTree.Impure.Internal.Structures
 import Data.BTree.Primitives
 
 import Properties.Primitives.Height (genNonZeroHeight)

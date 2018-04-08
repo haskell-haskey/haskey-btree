@@ -10,35 +10,34 @@ import Data.Word (Word8)
 import qualified Data.Map as M
 
 import Data.BTree.Alloc.Debug
-import Data.BTree.Impure.Insert
-import qualified Data.BTree.Impure as Tree
+import qualified Data.BTree.Impure as B
 
 tests :: Test
 tests = testGroup "Impure.Insert"
-    [ testProperty "insertTreeMany" prop_insertTreeMany
+    [ testProperty "insertMany" prop_insertMany
     , testProperty "insertOverflows" prop_insertOverflows
     ]
 
-prop_insertTreeMany :: [(Int64, Integer)] -> [(Int64, Integer)] -> Bool
-prop_insertTreeMany xs ys = ty1 == ty2
+prop_insertMany :: [(Int64, Integer)] -> [(Int64, Integer)] -> Bool
+prop_insertMany xs ys = ty1 == ty2
   where
-    tx  = insertAll xs Tree.empty
+    tx  = insertAll xs B.empty
 
     ty1 = evalDebug emptyPages $
               tx
               >>= insertAll ys
-              >>= Tree.toList
+              >>= B.toList
 
     ty2 = evalDebug emptyPages $
               tx
-              >>= insertTreeMany (M.fromList ys)
-              >>= Tree.toList
+              >>= B.insertMany (M.fromList ys)
+              >>= B.toList
 
-    insertAll kvs = foldl (>=>) return (map (uncurry insertTree) kvs)
+    insertAll kvs = foldl (>=>) return (map (uncurry B.insert) kvs)
 
 prop_insertOverflows :: M.Map Int64 [Word8] -> Bool
 prop_insertOverflows kvs
     | v <- evalDebug emptyPages $
-        insertTreeMany kvs Tree.empty
-        >>= Tree.toList
+        B.insertMany kvs B.empty
+        >>= B.toList
     = v == M.toList kvs

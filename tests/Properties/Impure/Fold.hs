@@ -9,8 +9,7 @@ import Data.Int
 import qualified Data.Map as M
 
 import Data.BTree.Alloc.Debug
-import Data.BTree.Impure.Insert
-import qualified Data.BTree.Impure as Tree
+import qualified Data.BTree.Impure as B
 
 tests :: Test
 tests = testGroup "Impure.Fold"
@@ -20,6 +19,6 @@ tests = testGroup "Impure.Fold"
 prop_foldable_toList_fromList :: [(Int64, Integer)] -> Bool
 prop_foldable_toList_fromList kvs
     | (v, _) <- runDebug emptyPages $
-        foldl (>=>) return (map (uncurry insertTree) kvs) Tree.empty
-         >>= Tree.toList
+        foldl (>=>) return (map (uncurry B.insert) kvs) B.empty
+         >>= B.toList
     = v == M.toList (M.fromList kvs)
