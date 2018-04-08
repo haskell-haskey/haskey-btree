@@ -2,7 +2,6 @@ haskey-btree
 ============
 
 [![Travis](https://travis-ci.org/haskell-haskey/haskey-btree.svg?branch=master)](https://travis-ci.org/haskell-haskey/haskey-btree)
-[![Coverage](https://coveralls.io/repos/github/haskell-haskey/haskey-btree/badge.svg?branch=master)](https://coveralls.io/github/haskell-haskey/haskey-btree?branch=master)
 [![Hackage](https://img.shields.io/hackage/v/haskey-btree.svg?maxAge=2592000)](https://hackage.haskell.org/package/haskey-btree)
 [![Stackage Nightly](http://stackage.org/package/haskey-btree/badge/nightly)](http://stackage.org/nightly/package/haskey-btree)
 [![Stackage LTS](http://stackage.org/package/haskey-btree/badge/lts)](http://stackage.org/lts/package/haskey-btree)
